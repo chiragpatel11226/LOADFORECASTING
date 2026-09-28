@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Power Demand Forecast</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">Grid<span>Watch</span></div>
+    <nav class="top-links">
+      <a href="#trend">Trend</a>
+      <a href="#patterns">Patterns</a>
+      <a href="#model">Model</a>
+      <a href="#predict">Predict</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Nine years of India's power grid, learned by a Random Forest.</h1>
+    <p>
+      This dashboard explores hourly electricity demand data and a
+      calendar-based regression model trained to forecast it. Every chart
+      below is computed from the same dataset the model was trained on.
+    </p>
+    <p class="source-note">
+      Source: hourly demand met, 2017 and Jan&ndash;Mar 2026 &middot;
+      <a href="https://iced.niti.gov.in" target="_blank" rel="noopener">NITI Aayog, India Climate &amp; Energy Dashboard</a>
+    </p>
+  </section>
+
+  <section class="stat-grid" id="stat-cards">
+    <div class="stat-card">
+      <div class="label">Peak demand recorded</div>
+      <div class="value rust" id="stat-peak">&ndash;</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Average demand</div>
+      <div class="value amber" id="stat-avg">&ndash;</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Lowest demand recorded</div>
+      <div class="value sage" id="stat-min">&ndash;</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Model accuracy (MAPE, test set)</div>
+      <div class="value amber" id="stat-mape">&ndash;</div>
+    </div>
+  </section>
+
+  <section id="trend">
+    <div class="section-head">
+      <h2>Daily demand, 2017 &rarr; 2026</h2>
+      <p>Daily mean of hourly demand across the full dataset. The jump between the two years reflects real grid-wide growth, not a data error.</p>
+    </div>
+    <div class="panel chart-box">
+      <canvas id="chart-daily"></canvas>
+    </div>
+  </section>
+
+  <section id="patterns">
+    <div class="section-head">
+      <h2>Recurring patterns the model learns from</h2>
+      <p>Demand follows strong daily, monthly and weekly rhythms &mdash; these are the seasonal features fed into the model.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="panel chart-box">
+        <canvas id="chart-hourly"></canvas>
+        <div class="chart-caption">Average demand by hour of day &mdash; the classic morning ramp / evening peak shape.</div>
+      </div>
+      <div class="panel chart-box">
+        <canvas id="chart-monthly"></canvas>
+        <div class="chart-caption">Average demand by month &mdash; summer cooling load pushes demand up mid-year.</div>
+      </div>
+      <div class="panel chart-box">
+        <canvas id="chart-dow"></canvas>
+        <div class="chart-caption">Average demand by day of week &mdash; weekdays run slightly above weekends.</div>
+      </div>
+      <div class="panel chart-box">
+        <canvas id="chart-importance"></canvas>
+        <div class="chart-caption">Random Forest feature importance &mdash; how much each input drives predictions.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="model">
+    <div class="section-head">
+      <h2>Model performance on unseen data</h2>
+      <p>Trained on all data up to a cutoff, tested on the most recent 30 days &mdash; never seen during training.</p>
+    </div>
+    <div class="panel chart-box" style="margin-bottom:16px;">
+      <canvas id="chart-actual-vs-pred"></canvas>
+      <div class="chart-caption">Daily mean of actual vs. predicted demand across the held-out test month.</div>
+    </div>
+    <div class="panel">
+      <table class="compare">
+        <thead>
+          <tr><th>Model</th><th>MAE (MW)</th><th>RMSE (MW)</th><th>MAPE</th><th>R&sup2;</th></tr>
+        </thead>
+        <tbody id="model-table-body">
+          <!-- filled by JS -->
+        </tbody>
+      </table>
+      <p class="split-note" id="split-note">Loading split details&hellip;</p>
+    </div>
+  </section>
+
+  <section id="predict">
+    <div class="section-head">
+      <h2>Try the model yourself</h2>
+      <p>Pick any date and hour &mdash; the trained model turns it into features and predicts demand live.</p>
+    </div>
+    <div class="panel predict-panel">
+      <div class="predict-form">
+        <label for="input-date">Date</label>
+        <input type="date" id="input-date" />
+
+        <label for="input-hour">Hour of day</label>
+        <input type="range" id="input-hour" min="0" max="23" value="18" />
+        <div class="hour-readout" id="hour-readout">18:00</div>
+
+        <button id="predict-btn" type="button">Predict demand</button>
+      </div>
+      <div class="result-box">
+        <div class="result-label">Predicted demand</div>
+        <div class="result-value" id="result-value">&ndash;</div>
+        <div class="result-meta" id="result-meta">Choose a date and hour, then press predict.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Built with pandas, scikit-learn and Flask.</span>
+    <span>Data: NITI Aayog India Climate &amp; Energy Dashboard</span>
+  </footer>
+
+</div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

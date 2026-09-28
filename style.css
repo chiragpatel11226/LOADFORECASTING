@@ -1,0 +1,360 @@
+/* ============================================================
+   Power Demand Forecast -- Dashboard Styles
+
+   Palette (deliberately free of any blue): a dark charcoal base
+   with an amber "grid glow" accent, rust-red for peak/alert
+   values, and a muted sage green for secondary series.
+   ============================================================ */
+
+:root {
+  --bg: #14120f;
+  --surface: #1e1b16;
+  --surface-raised: #26221b;
+  --border: #37312687;
+  --text: #f2ede4;
+  --text-muted: #a89e8c;
+  --amber: #e8a33d;
+  --amber-dim: #e8a33d33;
+  --rust: #c1440e;
+  --sage: #8fa662;
+  --sage-dim: #8fa66233;
+  --font-display: "Space Grotesk", "IBM Plex Sans", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px 96px;
+}
+
+/* ---------------- Header ---------------- */
+
+header.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 26px 0 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+}
+
+.brand span {
+  color: var(--amber);
+}
+
+nav.top-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-left: 24px;
+  font-size: 0.92rem;
+  transition: color 0.15s ease;
+}
+
+nav.top-links a:hover,
+nav.top-links a:focus-visible {
+  color: var(--text);
+}
+
+/* ---------------- Hero ---------------- */
+
+.hero {
+  padding: 8px 0 40px;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 4vw, 3.1rem);
+  line-height: 1.1;
+  max-width: 15ch;
+  margin: 0 0 18px;
+}
+
+.hero p {
+  color: var(--text-muted);
+  max-width: 62ch;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.hero .source-note {
+  margin-top: 14px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.hero .source-note a {
+  color: var(--amber);
+}
+
+/* ---------------- Stat cards ---------------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 56px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 20px 18px;
+}
+
+.stat-card .label {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+}
+
+.stat-card .value {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+.stat-card .value.amber { color: var(--amber); }
+.stat-card .value.rust { color: var(--rust); }
+.stat-card .value.sage { color: var(--sage); }
+
+/* ---------------- Sections ---------------- */
+
+section {
+  margin-bottom: 60px;
+  scroll-margin-top: 24px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.section-head p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 24px;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.chart-box canvas {
+  max-height: 280px;
+}
+
+.chart-caption {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 12px;
+}
+
+/* ---------------- Model comparison table ---------------- */
+
+table.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+}
+
+table.compare th,
+table.compare td {
+  text-align: left;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+table.compare th {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+table.compare tr.winner td:first-child {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+table.compare td.metric {
+  font-family: var(--font-display);
+}
+
+.split-note {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-left: 2px solid var(--amber);
+  padding-left: 14px;
+}
+
+/* ---------------- Predict panel ---------------- */
+
+.predict-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.predict-form label {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  margin-top: 16px;
+}
+
+.predict-form label:first-child {
+  margin-top: 0;
+}
+
+.predict-form input[type="date"],
+.predict-form input[type="range"] {
+  width: 100%;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
+
+.predict-form input[type="range"] {
+  padding: 0;
+  height: 6px;
+  accent-color: var(--amber);
+}
+
+.hour-readout {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--amber);
+  margin-top: 6px;
+}
+
+.predict-form button {
+  margin-top: 22px;
+  background: var(--amber);
+  color: #1a1509;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 22px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.predict-form button:hover {
+  filter: brightness(1.08);
+}
+
+.predict-form button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.result-box {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 26px;
+  text-align: left;
+}
+
+.result-box .result-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.result-box .result-value {
+  font-family: var(--font-display);
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--amber);
+  margin: 6px 0 10px;
+}
+
+.result-box .result-meta {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.result-box .result-meta strong {
+  color: var(--text);
+}
+
+/* ---------------- Footer ---------------- */
+
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+footer a { color: var(--amber); }
+
+/* ---------------- Responsive ---------------- */
+
+@media (max-width: 820px) {
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  .chart-grid { grid-template-columns: 1fr; }
+  .predict-panel { grid-template-columns: 1fr; }
+  nav.top-links { display: none; }
+}
