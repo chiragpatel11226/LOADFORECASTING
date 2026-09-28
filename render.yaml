@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: gridwatch-power-demand
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && python src/train_model.py"
+    startCommand: "gunicorn app:app --bind 0.0.0.0:$PORT"
