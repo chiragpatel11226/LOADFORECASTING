@@ -1,49 +1,41 @@
-
 /* ============================================================
    Power Demand Forecast -- Dashboard Styles
 
-   Palette (deliberately free of any blue): a dark charcoal base
-   with an amber "grid glow" accent, rust-red for peak/alert
-   values, and a muted sage green for secondary series.
+   White page, light-green boxes, a serif for headings and a
+   sans-serif for everything else.
    ============================================================ */
 
 :root {
-  --bg: #14120f;
-  --surface: #1e1b16;
-  --surface-raised: #26221b;
-  --border: #37312687;
-  --text: #f2ede4;
-  --text-muted: #a89e8c;
-  --amber: #e8a33d;
-  --amber-dim: #e8a33d33;
-  --rust: #c1440e;
-  --sage: #8fa662;
-  --sage-dim: #8fa66233;
-  --font-display: "Space Grotesk", "IBM Plex Sans", sans-serif;
-  --font-body: "IBM Plex Sans", sans-serif;
+  --bg: #ffffff;
+  --box: #e8f3e3;
+  --box-deep: #d6ebcc;
+  --border: #c5dcb9;
+  --text: #1f2d24;
+  --text-muted: #556459;
+  --green: #2f6b3f;
+  --green-dark: #1f3d2b;
+  --rust: #a4502a;
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "Source Sans 3", Arial, sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
+  font-size: 17px;
+  line-height: 1.6;
 }
 
 .wrap {
-  max-width: 1180px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 28px 96px;
+  padding: 0 28px 80px;
 }
 
 /* ---------------- Header ---------------- */
@@ -52,66 +44,56 @@ header.top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 26px 0 16px;
+  padding: 24px 0 14px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 48px;
+  margin-bottom: 44px;
 }
 
 .brand {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.1rem;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--green-dark);
 }
 
-.brand span {
-  color: var(--amber);
-}
+.brand span { color: var(--green); font-style: italic; }
 
 nav.top-links a {
   color: var(--text-muted);
   text-decoration: none;
-  margin-left: 24px;
-  font-size: 0.92rem;
-  transition: color 0.15s ease;
+  margin-left: 22px;
+  font-size: 0.98rem;
 }
 
 nav.top-links a:hover,
 nav.top-links a:focus-visible {
-  color: var(--text);
+  color: var(--green);
+  text-decoration: underline;
 }
 
 /* ---------------- Hero ---------------- */
 
-.hero {
-  padding: 8px 0 40px;
-}
+.hero { padding: 6px 0 36px; }
 
 .hero h1 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(2.1rem, 4vw, 3.1rem);
-  line-height: 1.1;
-  max-width: 15ch;
-  margin: 0 0 18px;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.15;
+  max-width: 20ch;
+  margin: 0 0 16px;
+  color: var(--green-dark);
 }
 
 .hero p {
   color: var(--text-muted);
   max-width: 62ch;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   margin: 0;
 }
 
-.hero .source-note {
-  margin-top: 14px;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-}
-
-.hero .source-note a {
-  color: var(--amber);
-}
+.hero .source-note { margin-top: 12px; font-size: 0.92rem; }
+.hero .source-note a { color: var(--green); }
 
 /* ---------------- Stat cards ---------------- */
 
@@ -119,36 +101,36 @@ nav.top-links a:focus-visible {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin-bottom: 56px;
+  margin-bottom: 52px;
 }
 
 .stat-card {
-  background: var(--surface);
+  background: var(--box);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px 20px 18px;
+  border-radius: 8px;
+  padding: 18px 20px;
 }
 
 .stat-card .label {
   color: var(--text-muted);
-  font-size: 0.82rem;
-  margin-bottom: 8px;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
 }
 
 .stat-card .value {
   font-family: var(--font-display);
-  font-size: 1.7rem;
-  font-weight: 600;
+  font-size: 1.65rem;
+  font-weight: 700;
 }
 
-.stat-card .value.amber { color: var(--amber); }
+.stat-card .value.amber { color: var(--green); }
 .stat-card .value.rust { color: var(--rust); }
-.stat-card .value.sage { color: var(--sage); }
+.stat-card .value.sage { color: var(--green-dark); }
 
 /* ---------------- Sections ---------------- */
 
 section {
-  margin-bottom: 60px;
+  margin-bottom: 56px;
   scroll-margin-top: 24px;
 }
 
@@ -156,7 +138,7 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -164,22 +146,23 @@ section {
 .section-head h2 {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.55rem;
   margin: 0;
+  color: var(--green-dark);
 }
 
 .section-head p {
   color: var(--text-muted);
-  font-size: 0.92rem;
+  font-size: 0.98rem;
   margin: 0;
   max-width: 46ch;
 }
 
 .panel {
-  background: var(--surface);
+  background: var(--box);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 22px 24px;
+  border-radius: 8px;
+  padding: 20px 22px;
 }
 
 .chart-grid {
@@ -188,14 +171,12 @@ section {
   gap: 16px;
 }
 
-.chart-box canvas {
-  max-height: 280px;
-}
+.chart-box canvas { max-height: 280px; }
 
 .chart-caption {
   color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-top: 12px;
+  font-size: 0.92rem;
+  margin-top: 10px;
 }
 
 /* ---------------- Model comparison table ---------------- */
@@ -203,37 +184,33 @@ section {
 table.compare {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.94rem;
+  font-size: 1rem;
 }
 
 table.compare th,
 table.compare td {
   text-align: left;
-  padding: 12px 14px;
+  padding: 11px 12px;
   border-bottom: 1px solid var(--border);
 }
 
 table.compare th {
   color: var(--text-muted);
-  font-weight: 500;
-  font-size: 0.82rem;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 table.compare tr.winner td:first-child {
-  color: var(--amber);
-  font-weight: 600;
-}
-
-table.compare td.metric {
-  font-family: var(--font-display);
+  color: var(--green);
+  font-weight: 700;
 }
 
 .split-note {
-  margin-top: 16px;
-  font-size: 0.85rem;
+  margin-top: 14px;
+  font-size: 0.92rem;
   color: var(--text-muted);
-  border-left: 2px solid var(--amber);
-  padding-left: 14px;
+  border-left: 3px solid var(--green);
+  padding-left: 12px;
 }
 
 /* ---------------- Predict panel ---------------- */
@@ -247,109 +224,94 @@ table.compare td.metric {
 
 .predict-form label {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
-  margin-bottom: 6px;
-  margin-top: 16px;
+  margin-bottom: 5px;
+  margin-top: 14px;
 }
 
-.predict-form label:first-child {
-  margin-top: 0;
-}
+.predict-form label:first-child { margin-top: 0; }
 
 .predict-form input[type="date"],
 .predict-form input[type="range"] {
   width: 100%;
-  background: var(--surface-raised);
+  background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text);
-  padding: 10px 12px;
+  padding: 9px 11px;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .predict-form input[type="range"] {
   padding: 0;
   height: 6px;
-  accent-color: var(--amber);
+  accent-color: var(--green);
 }
 
 .hour-readout {
   font-family: var(--font-display);
-  font-size: 0.95rem;
-  color: var(--amber);
+  font-size: 1.05rem;
+  color: var(--green);
   margin-top: 6px;
 }
 
 .predict-form button {
-  margin-top: 22px;
-  background: var(--amber);
-  color: #1a1509;
+  margin-top: 20px;
+  background: var(--green);
+  color: #ffffff;
   border: none;
-  border-radius: 8px;
-  padding: 12px 22px;
-  font-family: var(--font-display);
+  border-radius: 6px;
+  padding: 11px 22px;
+  font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: filter 0.15s ease;
 }
 
-.predict-form button:hover {
-  filter: brightness(1.08);
-}
+.predict-form button:hover { background: var(--green-dark); }
 
 .predict-form button:focus-visible,
 input:focus-visible {
-  outline: 2px solid var(--amber);
+  outline: 2px solid var(--green);
   outline-offset: 2px;
 }
 
 .result-box {
-  background: var(--surface-raised);
+  background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 26px;
-  text-align: left;
+  border-radius: 8px;
+  padding: 24px;
 }
 
-.result-box .result-label {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
+.result-box .result-label { color: var(--text-muted); font-size: 0.92rem; }
 
 .result-box .result-value {
   font-family: var(--font-display);
-  font-size: 2.6rem;
-  font-weight: 600;
-  color: var(--amber);
-  margin: 6px 0 10px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--green);
+  margin: 4px 0 8px;
 }
 
-.result-box .result-meta {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-}
-
-.result-box .result-meta strong {
-  color: var(--text);
-}
+.result-box .result-meta { font-size: 0.95rem; color: var(--text-muted); }
+.result-box .result-meta strong { color: var(--text); }
 
 /* ---------------- Footer ---------------- */
 
 footer {
   border-top: 1px solid var(--border);
-  padding-top: 22px;
+  padding-top: 20px;
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-footer a { color: var(--amber); }
+footer a { color: var(--green); }
 
 /* ---------------- Responsive ---------------- */
 
