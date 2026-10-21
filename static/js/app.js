@@ -7,26 +7,37 @@
    ============================================================ */
 
 const PALETTE = {
-  amber: "#e8a33d",
-  amberFill: "#e8a33d26",
-  rust: "#c1440e",
-  rustFill: "#c1440e26",
-  sage: "#8fa662",
-  sageFill: "#8fa66226",
-  grid: "#37312680",
-  text: "#a89e8c",
+  amber: "#2f6b3f",        // main line colour (dark green)
+  amberFill: "#2f6b3f26",
+  rust: "#5e9a4a",         // monthly bars
+  rustFill: "#5e9a4a26",
+  sage: "#9cc788",         // day-of-week bars
+  sageFill: "#9cc78826",
+  dark: "#1f3d2b",         // "actual" line
+  orange: "#c0762f",       // "predicted" line, needs to stand apart from the greens
+  grid: "#1f2d2420",
+  text: "#556459",
 };
 
-if (typeof Chart === "undefined") {
-  const b = document.getElementById("error-banner");
-  b.style.display = "block";
-  b.textContent = "Chart library failed to load (static/js/chart.umd.js missing).";
-  throw new Error("Chart.js not loaded");
+if (typeof Chart !== "undefined") {
+  Chart.defaults.font.family = "'Source Sans 3', Arial, sans-serif";
+  Chart.defaults.color = PALETTE.text;
+  Chart.defaults.borderColor = PALETTE.grid;
 }
 
-Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
-Chart.defaults.color = PALETTE.text;
-Chart.defaults.borderColor = PALETTE.grid;
+// Draws a chart, or leaves a short note if the Chart.js library did not load.
+// This way a missing library can never stop the rest of the page working.
+function makeChart(id, config) {
+  const canvas = document.getElementById(id);
+  if (typeof Chart === "undefined") {
+    if (canvas && !canvas.dataset.warned) {
+      canvas.dataset.warned = "1";
+      canvas.insertAdjacentHTML("afterend", '<p class="chart-caption">Chart could not load. Please refresh the page.</p>');
+    }
+    return null;
+  }
+  return new Chart(canvas, config);
+}
 
 function fmtMW(value) {
   return `${Math.round(value).toLocaleString()} MW`;
@@ -61,7 +72,7 @@ async function renderCharts() {
   document.getElementById("stat-min").textContent = fmtMW(data.summary.min_mw);
 
   // ---- Daily trend (full history) ----
-  new Chart(document.getElementById("chart-daily"), {
+  makeChart("chart-daily", {
     type: "line",
     data: {
       labels: data.daily_series.labels,
@@ -79,7 +90,7 @@ async function renderCharts() {
   });
 
   // ---- Hourly profile ----
-  new Chart(document.getElementById("chart-hourly"), {
+  makeChart("chart-hourly", {
     type: "line",
     data: {
       labels: data.hourly_profile.labels,
@@ -97,7 +108,7 @@ async function renderCharts() {
   });
 
   // ---- Monthly profile ----
-  new Chart(document.getElementById("chart-monthly"), {
+  makeChart("chart-monthly", {
     type: "bar",
     data: {
       labels: data.monthly_profile.labels,
@@ -111,7 +122,7 @@ async function renderCharts() {
   });
 
   // ---- Day of week profile ----
-  new Chart(document.getElementById("chart-dow"), {
+  makeChart("chart-dow", {
     type: "bar",
     data: {
       labels: data.dayofweek_profile.labels,
@@ -125,7 +136,7 @@ async function renderCharts() {
   });
 
   // ---- Actual vs predicted (test set) ----
-  new Chart(document.getElementById("chart-actual-vs-pred"), {
+  makeChart("chart-actual-vs-pred", {
     type: "line",
     data: {
       labels: data.actual_vs_predicted.labels,
@@ -133,7 +144,7 @@ async function renderCharts() {
         {
           label: "Actual",
           data: data.actual_vs_predicted.actual,
-          borderColor: PALETTE.sage,
+          borderColor: PALETTE.dark,
           backgroundColor: "transparent",
           pointRadius: 0,
           borderWidth: 2,
@@ -141,7 +152,7 @@ async function renderCharts() {
         {
           label: "Predicted",
           data: data.actual_vs_predicted.predicted,
-          borderColor: PALETTE.amber,
+          borderColor: PALETTE.orange,
           backgroundColor: "transparent",
           borderDash: [5, 4],
           pointRadius: 0,
@@ -157,7 +168,7 @@ async function renderCharts() {
   // ---- Feature importance ----
   const importance = await fetchJSON("/api/feature-importance");
   const entries = Object.entries(importance);
-  new Chart(document.getElementById("chart-importance"), {
+  makeChart("chart-importance", {
     type: "bar",
     data: {
       labels: entries.map(([k]) => k),
@@ -245,11 +256,5 @@ function wirePredictForm() {
   });
 }
 
-renderCharts().catch((err) => {
-  console.error(err);
-  const box = document.getElementById("error-banner");
-  box.style.display = "block";
-  box.textContent = "Dashboard could not load data: " + err.message;
-});
-wirePredictForm();
-
+wirePredictForm();   // first, so Predict works even if the charts fail
+renderCharts().catch((err) => console.error(err));
